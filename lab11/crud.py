@@ -31,27 +31,31 @@ ma = Marshmallow(app)
 
 class Bowl(abstract_tableware, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    garantee_in_days = db.Column(db.Integer, unique=False)
+    # garantee_in_days = db.Column(db.Integer, unique=False)
     style = db.Column(db.String(32), unique=False)
     wieght_in_grams = db.Column(db.Integer, unique=False)
-    ability_to_microwave = db.Column(db.Boolean, unique=False)
-    manufacturer = db.Column(db.String(32), unique=False)
+    # ability_to_microwave = db.Column(db.Boolean, unique=False)
+    # manufacturer = db.Column(db.String(32), unique=False)
     colour = db.Column(db.String(32), unique=False)
-    dessigned_for = db.Column(db.String(32), unique=False)
-    material = db.Column(db.String(32), unique=False)
+    # dessigned_for = db.Column(db.String(32), unique=False)
+    # material = db.Column(db.String(32), unique=False)
     price = db.Column(db.Integer, unique=False)
 
-
-    def __init__(self, garantee_in_days=0.0, style="N/A", wieght_in_grams=0.0, ability_to_microwave=True,
+    """def __init__(self, garantee_in_days=0.0, style="N/A", wieght_in_grams=0.0, ability_to_microwave=True,
                  manufacturer="N/A", colour="N\A", dessigned_for="N\A", material="N\A", price=0.0):
         super().__init__(garantee_in_days, style, wieght_in_grams, ability_to_microwave,
-                         manufacturer, colour, dessigned_for, material, price)
+                         manufacturer, colour, dessigned_for, material, price)"""
+
+    def __init__(self, style="N/A", wieght_in_grams=0.0, colour="N/A", price=0):
+        super().__int__(self, style, wieght_in_grams, colour, price)
 
 
 class BowlSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'garantee_in_days', 'style', 'wieght_in_grams', 'ability_to_microwave',
-                  'manufacturer', 'colour', 'designed_for', 'material', 'price')
+        fields = ('id', 'style', 'wieght_in_grams',
+                  'colour', 'price')
+        """fields = ('id', 'garantee_in_days', 'style', 'wieght_in_grams', 'ability_to_microwave',
+                  'manufacturer', 'colour', 'designed_for', 'material', 'price')"""
 
 
 bowl_schema = BowlSchema()
@@ -60,24 +64,24 @@ bowls_schema = BowlSchema(many=True)
 
 @app.route("/bowl", methods=["POST"])
 def add_bowl():
-    garantee_in_days = request.json['garantee_in_days']
+    # garantee_in_days = request.json['garantee_in_days']
     style = request.json['style']
     wieght_in_grams = request.json['wieght_in_grams']
-    ability_to_microwave = request.json['ability_to_microwave']
-    manufacturer = request.json['manufacturer']
+    # ability_to_microwave = request.json['ability_to_microwave']
+    # manufacturer = request.json['manufacturer']
     colour = request.json['colour']
-    dessigned_for = request.json['dessigned_for']
-    material = request.json['material']
+    # dessigned_for = request.json['dessigned_for']
+    # material = request.json['material']
     price = request.json['price']
-    bowl = Bowl(garantee_in_days,
-                style,
-                wieght_in_grams,
-                ability_to_microwave,
-                manufacturer,
-                colour,
-                dessigned_for,
-                material,
-                price)
+    bowl = Bowl(  # garantee_in_days,
+        style,
+        wieght_in_grams,
+        # ability_to_microwave,
+        # manufacturer,
+        colour,
+        # dessigned_for,
+        # material,
+        price)
     db.session.add(bowl)
     db.session.commit()
     return bowl_schema.jsonify(bowl)
@@ -104,14 +108,14 @@ def bowl_update(id):
     if not bowl:
         abort(404)
     old_bowl = copy.deepcopy(bowl)
-    bowl.garantee_in_days = request.json['garantee_in_days']
+    # bowl.garantee_in_days = request.json['garantee_in_days']
     bowl.style = request.json['style']
     bowl.wieght_in_grams = request.json['wieght_in_grams']
-    bowl.ability_to_microwave = request.json['ability_to_microwave']
-    bowl.manufacturer = request.json['manufacturer']
+    # bowl.ability_to_microwave = request.json['ability_to_microwave']
+    # bowl.manufacturer = request.json['manufacturer']
     bowl.colour = request.json['colour']
-    bowl.dessigned_for = request.json['dessigned_for']
-    bowl.material = request.json['material']
+    # bowl.dessigned_for = request.json['dessigned_for']
+    # bowl.material = request.json['material']
     bowl.price = request.json['price']
     db.session.commit()
     return bowl_schema.jsonify(old_bowl)
@@ -130,4 +134,3 @@ def bowl_delete(id):
 if __name__ == '__main__':
     db.create_all()
     app.run(debug=False, host='0.0.0.0')
-

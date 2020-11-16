@@ -22,6 +22,13 @@ class abstract_tableware:
         self.material = material
         self.price = price
 
+    def __int__(self, style: str, wieght_in_grams: int, colour: str, price: int):
+        self.style = style
+        self.wieght_in_grams = wieght_in_grams
+        self.colour = colour
+        self.price = price
+
+
     def __str__(self):
         garantee_in_days = "Garantee in days: {0}\n".format(self.garantee_in_days)
         style = "Style: {0}\n".format(self.style)
